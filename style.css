@@ -1,0 +1,160 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background: #f4f7fb;
+    color: #243047;
+}
+
+.site-header {
+    padding: 24px;
+    text-align: center;
+    color: white;
+    background: #243b65;
+}
+
+.site-header h1 {
+    margin: 0;
+}
+
+.site-header p {
+    margin-bottom: 0;
+}
+
+.container {
+    width: min(900px, 92%);
+    margin: 30px auto;
+}
+
+.panel,
+.note-card {
+    padding: 22px;
+    margin-bottom: 22px;
+    background: white;
+    border: 1px solid #dce3ed;
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 5%);
+}
+
+h2 {
+    margin-top: 0;
+}
+
+button {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 6px;
+    background: #2458a6;
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+button:hover:not(:disabled) {
+    background: #173f7d;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+#status {
+    padding: 10px;
+    border-radius: 6px;
+    background: #eef2f7;
+}
+
+#status.success {
+    color: #176534;
+    background: #e4f6e9;
+}
+
+#status.error {
+    color: #a3212b;
+    background: #fde8e8;
+}
+
+#status.loading {
+    color: #174b91;
+    background: #e7f0ff;
+}
+
+.form-group {
+    margin: 16px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input,
+textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #bdc8d8;
+    border-radius: 6px;
+    font: inherit;
+}
+
+input:focus,
+textarea:focus {
+    outline: 2px solid #7aa7ed;
+    border-color: #2458a6;
+}
+
+#notes-list {
+    padding: 0;
+    list-style: none;
+}
+
+.note-card h3 {
+    margin-top: 0;
+    overflow-wrap: anywhere;
+}
+
+.note-card p {
+    overflow-wrap: anywhere;
+    white-space: pre-wrap;
+}
+
+.note-card button {
+    background: #b52e39;
+}
+
+.note-card button:hover:not(:disabled) {
+    background: #8d1e29;
+}
+
+.empty-state {
+    padding: 18px;
+    text-align: center;
+    color: #64748b;
+    background: white;
+    border-radius: 8px;
+}
+
+footer {
+    padding: 18px;
+    text-align: center;
+    color: #64748b;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 94%;
+        margin: 16px auto;
+    }
+
+    .panel,
+    .note-card {
+        padding: 16px;
+    }
+}
