@@ -42,7 +42,7 @@ function renderNotes() {
     });
 }
 
-// Reusable function for API requests.
+// Reusable API request function.
 async function request(url, options = {}) {
     const response = await fetch(url, options);
 
@@ -50,16 +50,17 @@ async function request(url, options = {}) {
         throw new Error(`The server returned status ${response.status}.`);
     }
 
-    if (response.status === 204) {
-        return { data: null, status: response.status };
-    }
+    const data = response.status === 204
+        ? null
+        : await response.json();
 
-    const data = await response.json();
-
-    return { data, status: response.status };
+    return {
+        data,
+        status: response.status
+    };
 }
 
-// TASK 1: GET the first 10 notes.
+// TASK 1: Load notes using GET.
 async function loadNotes() {
     loadButton.disabled = true;
     showStatus("Loading notes...", "loading");
@@ -72,7 +73,10 @@ async function loadNotes() {
         if (notes.length === 0) {
             showStatus("No notes were found on the server.", "success");
         } else {
-            showStatus(`Loaded ${notes.length} notes from the server.`, "success");
+            showStatus(
+                `Loaded ${notes.length} notes from the server.`,
+                "success"
+            );
         }
     } catch (error) {
         showStatus(
@@ -87,8 +91,63 @@ async function loadNotes() {
 
 loadButton.addEventListener("click", loadNotes);
 
-// POST and DELETE will be implemented in Tasks 2 and 3.
-noteForm.addEventListener("submit", (event) => {
+// TASK 2: Create a note using POST.
+async function createNote(event) {
     event.preventDefault();
-    showStatus("Creating notes will be enabled in Task 2.", "loading");
-});
+
+    const title = titleInput.value.trim();
+    const body = bodyInput.value.trim();
+
+    if (!title) {
+        showStatus("Please enter a note title.", "error");
+        titleInput.focus();
+        return;
+    }
+
+    if (title.length > 100) {
+        showStatus("The title must not exceed 100 characters.", "error");
+        titleInput.focus();
+        return;
+    }
+
+    submitButton.disabled = true;
+    showStatus("Creating note...", "loading");
+
+    try {
+        const result = await request(API_URL, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                title,
+                body,
+                userId: 1
+            })
+        });
+
+        const newNote = result.data;
+
+        // JSONPlaceholder simulates POST requests but does not permanently
+        // save new posts. Keep the returned note in the local page state.
+        notes.unshift(newNote);
+        renderNotes();
+
+        showStatus(
+            `Note created (status ${result.status}, id ${newNote.id}).`,
+            "success"
+        );
+
+        noteForm.reset();
+    } catch (error) {
+        showStatus(
+            "Unable to create the note. Please try again.",
+            "error"
+        );
+        console.error("Create note error:", error);
+    } finally {
+        submitButton.disabled = false;
+    }
+}
+
+noteForm.addEventListener("submit", createNote);
